@@ -21,7 +21,7 @@ wait_for_pages_deployment() {
     local BRANCH="${3:?missing arg 3: BRANCH}"
     local TOKEN="${4:?missing arg 4: TOKEN}"
 
-    local PAGES_BUILD_STARTED_TIMEOUT=90
+    local PAGES_BUILD_STARTED_TIMEOUT=180
     local PAGES_BUILD_FINISHED_TIMEOUT=1800
 
     if [ ${#TARGET_SHA} -ne 40 ]; then
@@ -51,7 +51,7 @@ wait_for_pages_deployment() {
                 -H "Authorization: Bearer $TOKEN" \
                 -H "Accept: application/vnd.github+json" \
                 -H "X-GitHub-Api-Version: 2022-11-28" \
-                "https://api.github.com/repos/$REPO/pages/builds?per_page=100"
+                "$GITHUB_API_URL/repos/$REPO/pages/builds?per_page=100"
         )
 
         # Get the build ID for this commit SHA if present

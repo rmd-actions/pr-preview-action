@@ -5,7 +5,7 @@ source "$GITHUB_ACTION_PATH/lib/calculate-pages-base-url.sh"
 source "$GITHUB_ACTION_PATH/lib/remove-prefix-path.sh"
 source "$GITHUB_ACTION_PATH/lib/determine-auto-action.sh"
 
-declare deployment_action pr_number deployment_repository pages_base_url pages_base_path umbrella_path github_action_ref github_action_repository deprecated_custom_url
+declare deployment_action pr_number deployment_repository pages_base_url pages_base_path umbrella_path action_repository action_ref deprecated_custom_url
 
 # Deprecation of custom-url in favour of pages-base-url
 if [ -z "$pages_base_url" ] && [ -n "$deprecated_custom_url" ]; then
@@ -31,7 +31,7 @@ if [ "$deployment_action" = "auto" ]; then
     echo >&2 "Auto action is $deployment_action"
 fi
 
-action_version=$("$GITHUB_ACTION_PATH/lib/find-current-git-tag.sh" -p "$github_action_repository" -f "$github_action_ref")
+action_version=$("$GITHUB_ACTION_PATH/lib/find-current-git-tag.sh" -p "$action_repository" -f "$action_ref")
 action_start_timestamp=$(date '+%s')
 action_start_time=$(date '+%Y-%m-%d %H:%M %Z')
 
@@ -45,7 +45,7 @@ action_start_time=$(date '+%Y-%m-%d %H:%M %Z')
     echo "preview_url_path=$preview_url_path"
     echo "preview_url=https://$pages_base_url/$preview_url_path/"
 
-    echo "action_repository=$github_action_repository"
+    echo "action_repository=$action_repository"
     echo "action_version=$action_version"
     echo "action_start_time=$action_start_time"
 } >> "$GITHUB_ENV"
